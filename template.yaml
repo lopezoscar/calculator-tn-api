@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  calculator-tn-api
+
+Transform:
+- AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Architectures:
+        - x86_64
+    Timeout: 60
+    MemorySize: 128
+    AutoPublishAlias: live
+    DeploymentPreference:
+      Type: AllAtOnce
+    Tracing: Active
+    Environment:
+      Variables:
+        JWT_PUBLIC_KEY: !Sub ${JwtPublicKey}
+        JWT_HS256_KEY: !Sub ${JwtHS256Key}
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+        NODE_ENV: !Sub ${Environment}
+
+Resources:
+  CalculatorApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Sub ${Environment}
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+        MaxAge: "'600'"
+        AllowCredentials: "'*'"
+
+  AuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/app.auth
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/auth
+            Method: POST
+  AuthFunctionErrors:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      MetricName: ErrorsAuthFunction
+      Statistic: Sum
+      ComparisonOperator: GreaterThanThreshold
+      Threshold: 5
+      Period: 60
+      EvaluationPeriods: 1
+      TreatMissingData: notBreaching
+      Namespace: "AWS/Lambda"
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref AuthFunction
+Outputs:
+  WebEndpoint:
+    Description: "Calculator API URL"
+    Value: !Sub "https://${CalculatorApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
