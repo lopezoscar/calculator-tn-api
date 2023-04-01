@@ -1,5 +1,11 @@
 const middify = require('./middify')
 
-const AuthRouter = require('./routers/auth-router')
-const authRouter = new AuthRouter()
-exports.auth = middify(authRouter.auth)
+const modelsLayer = require('./models')
+const servicesLayer = require('./services')
+const routersLayer = require('./routers')
+
+const models = modelsLayer({})
+const services = servicesLayer(models)
+const routers = routersLayer(services)
+
+exports.auth = middify((event) => routers.authRouter.auth(event))

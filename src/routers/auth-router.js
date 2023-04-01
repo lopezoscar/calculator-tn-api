@@ -17,11 +17,16 @@ function validate (data) {
 }
 
 class AuthRouter {
+  constructor (services) {
+    this.services = services
+  }
+
   async auth ({ body }) {
+    const { authService } = this.services
     try {
       const params = body
       validate(params)
-      const response = { accessToken: 'token here' }
+      const response = await authService.auth(body)
       return {
         statusCode: StatusCodes.CREATED,
         body: JSON.stringify(response)
