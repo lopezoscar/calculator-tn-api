@@ -34,7 +34,10 @@ class AuthRouter {
     } catch (error) {
       console.log(error)
       if (error instanceof ValidationError) {
-        throw new CreateError.BadRequest('BAD REQUEST: Please check parameters')
+        if (error.message === 'INVALID_LOGIN') {
+          throw new CreateError.Unauthorized()
+        }
+        throw new CreateError.BadRequest(error.message)
       } else {
         throw new CreateError(StatusCodes.INTERNAL_SERVER_ERROR)
       }

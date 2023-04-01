@@ -1,5 +1,5 @@
-const Security = require('../lib/security-lib')
-const Token = require('../lib/token-lib')
+const { comparePasswords } = require('../lib/security-lib')
+const { createToken } = require('../lib/token-lib')
 const ValidationError = require('../errors/ValidationError')
 
 class AuthService {
@@ -8,14 +8,22 @@ class AuthService {
   }
 
   async auth ({ username, password }) {
-    const { UserModel } = this.models
+    const { userModel } = this.models
     try {
-      const user = await UserModel.getUserByUsername(username)
-      if (Security.comparePasswords({ plainPassword: password, passwordHashed: user.password })) {
-        Token.createToken({ payload: { userId: user.id } })
+      const user = await userModel.getUserByUsername(username)
+      if (!user) {
+        throw new Error('user not found')
       }
+      const validPassword = comparePasswords({ plainPassword: password, passwordHashed: user.password })
+
+      if (validPassword) {
+        return createToken({ payload: { userId: user.id } })
+      }
+
+      throw new Error('invalid password')
     } catch (error) {
-      throw new ValidationError('invalid login')
+      console.log(error)
+      throw new ValidationError('INVALID_LOGIN')
     }
   }
 }

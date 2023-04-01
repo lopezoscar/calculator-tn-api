@@ -1,3 +1,7 @@
+const UserModel = require('../models/user-model')
+
 module.exports = function (db) {
-  return {}
+  return {
+    userModel: new UserModel()
+  }
 }
