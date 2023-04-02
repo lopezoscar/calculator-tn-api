@@ -16,8 +16,7 @@ class AuthService {
       if (!user) {
         throw new Error('user not found')
       }
-      const validPassword = comparePasswords({ plainPassword: password, passwordHashed: user.password })
-
+      const validPassword = await comparePasswords({ plainPassword: password, passwordHashed: user.password })
       if (validPassword) {
         return createToken({ payload: { userId: user.id } })
       }
