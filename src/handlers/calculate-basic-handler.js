@@ -22,11 +22,13 @@ function validate (data) {
   }
 }
 
-async function calculateBasic ({ body }) {
+async function calculateBasic (event) {
+  const body = event.body
+  const userId = event.requestContext.authorizer.claims.userId
   try {
     const params = body
     validate(params)
-    const response = await calculatorService.calculateBasic(body)
+    const response = await calculatorService.calculateBasic({ userId, ...body })
     return {
       statusCode: StatusCodes.OK,
       body: JSON.stringify(response)

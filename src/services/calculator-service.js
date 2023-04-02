@@ -14,7 +14,7 @@ class CalculatorService {
     }
   }
 
-  async calculateBasic ({ operationType, firstParam, secondParam }) {
+  async calculateBasic ({ userId, operationType, firstParam, secondParam }) {
     if (!this.basicOperations[operationType]) {
       throw new ValidationError('invalid operation')
     }
@@ -24,6 +24,7 @@ class CalculatorService {
       operationResponse,
       firstParam,
       secondParam,
+      userId,
       date: new Date()
     }
     try {

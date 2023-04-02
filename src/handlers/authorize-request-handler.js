@@ -20,6 +20,7 @@ module.exports = (event, context, callback) => {
     const decoded = jwt.verify(token, secret)
 
     const policyEffect = decoded && decoded.userId ? 'Allow' : 'Deny'
+    event.user = decoded
     return callback(null, generateAuthResponse(decoded.userId, policyEffect, methodArn))
   } catch (error) {
     console.log('error verifying token', error)
