@@ -1,7 +1,10 @@
-const UserModel = require('../models/user-model')
 
-module.exports = function (db) {
+const UserModel = require('../models/user-model')
+const { connectToDatabase } = require('../db')
+
+module.exports = async function () {
+  const db = await connectToDatabase()
   return {
-    userModel: new UserModel()
+    userModel: new UserModel(db)
   }
 }

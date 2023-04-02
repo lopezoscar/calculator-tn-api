@@ -1,16 +1,9 @@
 const USERS_COLLECTION = 'users'
+const { getDB } = require('../db')
 
 class UserModel {
-  constructor (db) {
-    this.db = db
-  }
-
   getUserByUsername (username) {
-    return {
-      id: 1,
-      username: 'lopezoscar'
-    }
-    // return this.db.collection(USERS_COLLECTION).find({ username })
+    return getDB().collection(USERS_COLLECTION).findOne({ username })
   }
 }
 

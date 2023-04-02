@@ -1,0 +1,23 @@
+service: calculator-tn-api
+frameworkVersion: '3'
+
+plugins:
+ - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 128
+  timeout: 10
+  tracing:
+    lambda: true
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+
+functions:
+  api:
+    handler: app.auth
+    events:
+      - httpApi:
+          path: /v1/auth
+          method: POST
