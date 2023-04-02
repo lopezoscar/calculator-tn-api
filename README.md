@@ -4,7 +4,8 @@
 
 * Node.js 18
 * Docker
-* AWS SAM
+* Serverless Framework
+* MongoDB
 
 ## Getting started
 
