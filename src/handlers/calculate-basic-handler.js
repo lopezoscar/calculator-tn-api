@@ -13,7 +13,7 @@ const calculatorService = new CalculatorService()
 const schema = Joi.object({
   operationType: Joi.string().valid('addition', 'subtraction', 'multiplication', 'division', 'square_root').required(),
   firstParam: Joi.number().required(),
-  secondParam: Joi.number().required()
+  secondParam: Joi.number().required().when('operationType', { is: 'square_root', then: Joi.number().allow(null).optional() })
 })
 
 function validate (data) {
