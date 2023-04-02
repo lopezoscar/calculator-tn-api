@@ -1,8 +1,8 @@
 const MongoClient = require('mongodb').MongoClient
 const { StatusCodes } = require('http-status-codes')
 
-const url = process.env.DB_CONN || 'mongodb://localhost:27017/calculator-db'
-const dbName = process.env.DB || 'calculator-db'
+const url = process.env.DB_CONN || process.env.MONGO_URL || 'mongodb://localhost:27017/calculator-db'
+const dbName = process.env.DB || process.env.MONGO_DB || 'calculator-db'
 const client = new MongoClient(url, { useUnifiedTopology: true })
 
 let cachedDB
