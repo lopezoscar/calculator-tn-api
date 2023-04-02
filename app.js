@@ -4,6 +4,7 @@ const auth = require('./src/handlers/auth-handler')
 const register = require('./src/handlers/register-handler')
 const calculateBasic = require('./src/handlers/calculate-basic-handler')
 const calculateRandom = require('./src/handlers/calculate-random-handler')
+const listRecordsByUserId = require('./src/handlers/list-records-by-user-id-handler')
 
 const authorizeRequest = require('./src/handlers/authorize-request-handler')
 
@@ -13,6 +14,7 @@ exports.auth = createHandler(auth)
 exports.register = createHandler(register)
 exports.calculateBasic = createHandler(calculateBasic)
 exports.calculateRandom = createHandler(calculateRandom)
+exports.listRecordsByUserId = createHandler(listRecordsByUserId)
 
 function createHandler (handlerFn) {
   const handler = async (event, context) => {

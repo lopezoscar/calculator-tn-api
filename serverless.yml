@@ -51,3 +51,13 @@ functions:
             name: authorizeRequest
             identitySource: method.request.header.Authorization
             resultTtlInSeconds: 3600
+  listRecordsByUserId:
+    handler: app.listRecordsByUserId
+    events:
+      - http:
+          path: /v1/records
+          method: GET
+          authorizer:
+            name: authorizeRequest
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 3600
