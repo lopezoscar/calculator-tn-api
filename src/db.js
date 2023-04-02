@@ -33,4 +33,8 @@ exports.getDB = function () {
   return cachedDB
 }
 
+exports.getClient = function () {
+  return client
+}
+
 exports.connectToDatabase = connectToDatabase

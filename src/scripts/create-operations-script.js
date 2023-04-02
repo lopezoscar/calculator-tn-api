@@ -1,5 +1,5 @@
 const OPERATIONS_COLLECTION = 'operations'
-const { connectToDatabase, getDB } = require('../db')
+const { connectToDatabase, getDB, getClient } = require('../db')
 
 async function createOperations () {
   await connectToDatabase()
@@ -15,6 +15,8 @@ async function createOperations () {
     ])
     console.log('operations created', result)
   }
+  await getDB().collection(OPERATIONS_COLLECTION).createIndex({ type: 1 })
+  await getClient().close()
 }
 
 createOperations()
