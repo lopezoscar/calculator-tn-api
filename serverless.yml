@@ -28,3 +28,9 @@ functions:
       - httpApi:
           path: /v1/register
           method: POST
+  calculateBasic:
+    handler: app.calculateBasic
+    events:
+      - httpApi:
+          path: /v1/calculate/basic
+          method: POST

@@ -2,9 +2,11 @@ const { connectToDatabase } = require('./src/db')
 
 const auth = require('./src/handlers/auth-handler')
 const register = require('./src/handlers/register-handler')
+const calculateBasic = require('./src/handlers/calculate-basic-handler')
 
 exports.auth = createHandler(auth)
 exports.register = createHandler(register)
+exports.calculateBasic = createHandler(calculateBasic)
 
 function createHandler (handlerFn) {
   const handler = async (event, context) => {
@@ -14,7 +16,6 @@ function createHandler (handlerFn) {
 
     return handlerFn(event)
   }
-
   return handler
 }
 
