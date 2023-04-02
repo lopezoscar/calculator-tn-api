@@ -1,36 +1,6 @@
 const AuthService = require('../../src/services/auth-service')
 const { comparePasswords } = require('../../src/lib/security-lib')
 
-jest.mock('../../src/models/user-model', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      saveUser: jest.fn().mockResolvedValue({ insertedId: '642999749f57ee9aa15d6fe9' }),
-      getUserByUsername: jest.fn()
-        .mockResolvedValueOnce(
-          {
-            _id: '642999749f57ee9aa15d6fe9',
-            username: 'lopezoscar',
-            status: 'ACTIVE',
-            balance: 80,
-            createdAt: '2023-04-02T15:04:19.966Z',
-            password: '$2a$10$tEs6vKv.9SrBHCjDDQQL6uRfvuOHJBJNoqOfQQ643Dqsn2J0TzS..'
-          }
-        )
-        .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(
-          {
-            _id: '642999749f57ee9aa15d6fe9',
-            username: 'lopezoscar',
-            status: 'ACTIVE',
-            balance: 80,
-            createdAt: '2023-04-02T15:04:19.966Z',
-            password: '$2a$10$tEs6vKv.9SrBHCjDDQQL6uRfvuOHJBJNoqOfQQ643Dqsn2J0TzS..'
-          }
-        )
-    }
-  })
-})
-
 const JWT_TOKEN_SUCCESS = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI5OTk3NDlmNTdlZTlhYTE1ZDZmZTkiLCJpYXQiOjE2ODA0NTY4MjIsImV4cCI6MTY4MDQ2MDQyMn0.rBd54rbl9QWCQa9nQl2I3KPZFXSO1C6XPVq7-ejQFyQ'
 jest.mock('../../src/lib/token-lib', () => (
   {
@@ -46,6 +16,28 @@ jest.mock('../../src/lib/security-lib', () => (
     hashPassword: jest.fn()
   }
 ))
+
+jest.mock('../../src/models/user-model', () => {
+  const VALID_USER = {
+    _id: '642999749f57ee9aa15d6fe9',
+    username: 'lopezoscar',
+    status: 'ACTIVE',
+    balance: 80,
+    createdAt: '2023-04-02T15:04:19.966Z',
+    password: '$2a$10$tEs6vKv.9SrBHCjDDQQL6uRfvuOHJBJNoqOfQQ643Dqsn2J0TzS..'
+  }
+  return jest.fn().mockImplementation(() => {
+    return {
+      saveUser: jest.fn().mockResolvedValue({ insertedId: '642999749f57ee9aa15d6fe9' }),
+      getUserByUsername: jest.fn()
+        .mockResolvedValueOnce(VALID_USER) // 'should return an access token for valid credentials'
+        .mockResolvedValueOnce(null) // 'should return an error with user not found with invalid credentials'
+        .mockResolvedValueOnce(VALID_USER) // 'should return an error with an invalid password'
+        .mockResolvedValueOnce(null) // 'should register a user'
+        .mockResolvedValueOnce(VALID_USER) // 'should fail trying to register an existing user'
+    }
+  })
+})
 
 describe('AuthService', () => {
   let authService
@@ -106,8 +98,21 @@ describe('AuthService', () => {
       }
 
       const result = await authService.register(newUser)
-      console.log('result', result)
       expect(result).toHaveProperty('accessToken')
+    })
+
+    test('should fail trying to register an existing user', async () => {
+      const newUser = {
+        username: 'lopezoscar',
+        password: 'calculator1234'
+      }
+
+      try {
+        await authService.register(newUser)
+      } catch (error) {
+        console.log('error', error)
+        expect(error.message).toMatch('username exists')
+      }
     })
   })
 })
