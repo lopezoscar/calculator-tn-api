@@ -62,6 +62,10 @@ class CalculatorService {
 
     const randomString = await this.randomLib.getRandom({ length })
 
+    if (!randomString) {
+      throw new InternalServerError('cannot calculate a random string')
+    }
+
     const newRecord = {
       operation: 'random_string',
       userId,
