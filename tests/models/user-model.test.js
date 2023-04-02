@@ -47,4 +47,26 @@ describe('UserModel', () => {
       expect(user).toBe(null)
     })
   })
+
+  describe('saveUser', () => {
+    test('should return a new user on save', async () => {
+      const newUser = {
+        username: 'lopezoscar',
+        status: 'ACTIVE',
+        balance: 100,
+        createdAt: new Date()
+      }
+      const { insertedId } = await userModel.saveUser({ newUser })
+      expect(insertedId).toBeDefined()
+    })
+  })
+
+  describe('decrementUserBalance', () => {
+    test('should update the balance in a user', async () => {
+      const userId = '642999749f57ee9aa15d6fe9'
+      await userModel.decrementUserBalance({ userId, cost: 5 })
+      const user = await userModel.getUserById(userId)
+      expect(user?.balance).toBe(75)
+    })
+  })
 })
