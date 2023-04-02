@@ -1,17 +1,10 @@
-// const modelsLayer = require('./src/models')
-// const servicesLayer = require('./src/services')
-// const routersLayer = require('./src/routers')
-
-// const { connectToDatabase } = require('./src/db')
-
-// const models = modelsLayer()
-// const services = servicesLayer(models)
-// const routers = routersLayer(services)
-
 const { connectToDatabase } = require('./src/db')
+
 const auth = require('./src/handlers/auth-handler')
+const register = require('./src/handlers/register-handler')
 
 exports.auth = createHandler(auth)
+exports.register = createHandler(register)
 
 function createHandler (handlerFn) {
   const handler = async (event, context) => {

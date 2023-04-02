@@ -5,6 +5,10 @@ class UserModel {
   getUserByUsername (username) {
     return getDB().collection(USERS_COLLECTION).findOne({ username })
   }
+
+  saveUser (user) {
+    return getDB().collection(USERS_COLLECTION).insertOne(user)
+  }
 }
 
 module.exports = UserModel

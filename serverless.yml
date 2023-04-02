@@ -16,9 +16,15 @@ provider:
     JWT_HS256_KEY: ${param:jwtKey}
 
 functions:
-  api:
+  auth:
     handler: app.auth
     events:
       - httpApi:
           path: /v1/auth
+          method: POST
+  register:
+    handler: app.register
+    events:
+      - httpApi:
+          path: /v1/register
           method: POST
