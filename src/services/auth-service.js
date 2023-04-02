@@ -4,6 +4,10 @@ const UnauthorizedError = require('../errors/UnauthorizedError')
 const UserModel = require('../models/user-model')
 const ValidationError = require('../errors/ValidationError')
 const InternalServerError = require('../errors/InternalServerError')
+const USER_STATUS = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+}
 
 class AuthService {
   constructor () {
@@ -42,7 +46,8 @@ class AuthService {
 
     try {
       const newUser = {
-        username
+        username,
+        status: USER_STATUS.ACTIVE
       }
 
       const passwordHash = await hashPassword(password)
