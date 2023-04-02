@@ -1,10 +1,10 @@
 const ValidationError = require('../errors/ValidationError')
 const InternalServerError = require('../errors/InternalServerError')
+const TooManyRequestsError = require('../errors/TooManyRequestsError')
 
 const RecordModel = require('../models/record-model')
 const UserModel = require('../models/user-model')
 const OperationModel = require('../models/operation-model')
-const TooManyRequestsError = require('../errors/TooManyRequestsError')
 
 const RandomLib = require('../lib/random-lib')
 
@@ -39,7 +39,6 @@ class CalculatorService {
     await this._checkUserBalance({ userId, cost: operation.cost })
 
     const operationResponse = this.basicOperations[operationType](firstParam, secondParam)
-    console.log('operationResponse', operationResponse)
 
     const newRecord = {
       operation: operationType,
