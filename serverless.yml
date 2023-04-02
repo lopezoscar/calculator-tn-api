@@ -13,7 +13,7 @@ provider:
     lambda: true
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    JWT_HS256_KEY: "mV+VF4lH8/Z7eekRDFzYsxY4JYFZZZ7DEba2e2ZHLKg="
+    JWT_HS256_KEY: ${param:jwtKey}
 
 functions:
   api:
