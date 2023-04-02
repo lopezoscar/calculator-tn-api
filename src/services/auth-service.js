@@ -46,13 +46,14 @@ class AuthService {
         username
       }
 
-      const passwordHash = hashPassword(password)
+      const passwordHash = await hashPassword(password)
       newUser.password = passwordHash
 
       const { insertedId } = await this.userModel.saveUser(newUser)
       if (!insertedId) {
         throw new Error('user not created in db')
       }
+
       const accessToken = createToken({ payload: { userId: insertedId } })
 
       return {
