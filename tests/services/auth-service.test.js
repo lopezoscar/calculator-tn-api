@@ -4,6 +4,7 @@ const { comparePasswords } = require('../../src/lib/security-lib')
 jest.mock('../../src/models/user-model', () => {
   return jest.fn().mockImplementation(() => {
     return {
+      saveUser: jest.fn().mockResolvedValue({ insertedId: '642999749f57ee9aa15d6fe9' }),
       getUserByUsername: jest.fn()
         .mockResolvedValueOnce(
           {
@@ -41,7 +42,8 @@ jest.mock('../../src/lib/token-lib', () => (
 jest.mock('../../src/lib/security-lib', () => (
   {
     ...(jest.requireActual('../../src/lib/security-lib')),
-    comparePasswords: jest.fn()
+    comparePasswords: jest.fn(),
+    hashPassword: jest.fn()
   }
 ))
 
@@ -93,6 +95,19 @@ describe('AuthService', () => {
         console.log('tet', error)
         expect(error.message).toMatch('INVALID_LOGIN')
       }
+    })
+  })
+
+  describe('register', () => {
+    test('should register a user', async () => {
+      const newUser = {
+        username: 'lopezoscar',
+        password: 'calculator1234'
+      }
+
+      const result = await authService.register(newUser)
+      console.log('result', result)
+      expect(result).toHaveProperty('accessToken')
     })
   })
 })
