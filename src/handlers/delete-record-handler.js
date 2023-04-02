@@ -7,13 +7,11 @@ const UnauthorizedError = require('../errors/UnauthorizedError')
 const { StatusCodes } = require('http-status-codes')
 
 const RecordService = require('../services/record-service')
-const TooManyRequestsError = require('../errors/TooManyRequestsError')
+const NotFoundError = require('../errors/NotFoundError')
 const recordService = new RecordService()
 
 const schema = Joi.object({
-  page: Joi.number().min(1).max(100).required(),
-  limit: Joi.number().min(1).max(100).required(),
-  sort: Joi.string().optional().allow(null)
+  recordId: Joi.string().required()
 })
 
 function validate (data) {
@@ -23,11 +21,11 @@ function validate (data) {
   }
 }
 
-async function listRecordsByUserId ({ userId, queryStringParameters }) {
+async function deleteRecord ({ userId, body }) {
   try {
-    const params = queryStringParameters
+    const params = body
     validate(params)
-    const response = await recordService.listRecordsByUserId({ userId, ...params })
+    const response = await recordService.deleteRecord({ userId, ...body })
     return {
       statusCode: StatusCodes.OK,
       body: JSON.stringify(response)
@@ -41,26 +39,27 @@ async function listRecordsByUserId ({ userId, queryStringParameters }) {
         message: e.errorMessage
       }
     }
+    if (error instanceof NotFoundError) {
+      const e = new CreateError.NotFound(error.message)
+      return {
+        statusCode: e.status,
+        message: e.errorMessage
+      }
+    }
     if (error instanceof UnauthorizedError) {
       const e = new CreateError.Unauthorized(error.message)
       return {
         statusCode: e.status,
         message: e.errorMessage
       }
-    }
-    if (error instanceof TooManyRequestsError) {
-      const e = new CreateError.TooManyRequests(error.message)
+    } else {
+      const e = new CreateError(StatusCodes.INTERNAL_SERVER_ERROR)
       return {
         statusCode: e.status,
         message: e.errorMessage
       }
     }
-    const e = new CreateError(StatusCodes.INTERNAL_SERVER_ERROR)
-    return {
-      statusCode: e.status,
-      message: e.errorMessage
-    }
   }
 }
 
-module.exports = listRecordsByUserId
+module.exports = deleteRecord

@@ -41,6 +41,7 @@ class CalculatorService {
       firstParam,
       secondParam,
       userId,
+      active: true,
       date: new Date()
     }
 
@@ -70,6 +71,7 @@ class CalculatorService {
       operation: 'random_string',
       userId,
       operationResponse: randomString,
+      active: true,
       date: new Date()
     }
 

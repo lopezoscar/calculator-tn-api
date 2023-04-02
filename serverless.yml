@@ -61,3 +61,13 @@ functions:
             name: authorizeRequest
             identitySource: method.request.header.Authorization
             resultTtlInSeconds: 3600
+  deleteRecord:
+    handler: app.deleteRecord
+    events:
+      - http:
+          path: /v1/records
+          method: DELETE
+          authorizer:
+            name: authorizeRequest
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 3600
