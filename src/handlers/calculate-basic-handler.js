@@ -2,7 +2,6 @@ const Joi = require('joi')
 const CreateError = require('http-errors')
 
 const ValidationError = require('../errors/ValidationError')
-const UnauthorizedError = require('../errors/UnauthorizedError')
 
 const { StatusCodes } = require('http-status-codes')
 
@@ -36,13 +35,6 @@ async function calculateBasic ({ userId, body }) {
     console.log(error)
     if (error instanceof ValidationError) {
       const e = new CreateError.BadRequest(error.message)
-      return {
-        statusCode: e.status,
-        message: e.errorMessage
-      }
-    }
-    if (error instanceof UnauthorizedError) {
-      const e = new CreateError.Unauthorized(error.message)
       return {
         statusCode: e.status,
         message: e.errorMessage
