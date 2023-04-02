@@ -4,10 +4,13 @@ const UnauthorizedError = require('../errors/UnauthorizedError')
 const UserModel = require('../models/user-model')
 const ValidationError = require('../errors/ValidationError')
 const InternalServerError = require('../errors/InternalServerError')
+
 const USER_STATUS = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE'
 }
+
+const USER_INIT_BALANCE = 5
 
 class AuthService {
   constructor () {
@@ -48,6 +51,7 @@ class AuthService {
       const newUser = {
         username,
         status: USER_STATUS.ACTIVE,
+        balance: USER_INIT_BALANCE,
         createdAt: new Date()
       }
 

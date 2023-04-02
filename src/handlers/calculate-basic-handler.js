@@ -7,6 +7,7 @@ const UnauthorizedError = require('../errors/UnauthorizedError')
 const { StatusCodes } = require('http-status-codes')
 
 const CalculatorService = require('../services/calculator-service')
+const TooManyRequestsError = require('../errors/TooManyRequestsError')
 const calculatorService = new CalculatorService()
 
 const schema = Joi.object({
@@ -46,12 +47,18 @@ async function calculateBasic ({ userId, body }) {
         statusCode: e.status,
         message: e.errorMessage
       }
-    } else {
-      const e = new CreateError(StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+    if (error instanceof TooManyRequestsError) {
+      const e = new CreateError.TooManyRequests(error.message)
       return {
         statusCode: e.status,
         message: e.errorMessage
       }
+    }
+    const e = new CreateError(StatusCodes.INTERNAL_SERVER_ERROR)
+    return {
+      statusCode: e.status,
+      message: e.errorMessage
     }
   }
 }
