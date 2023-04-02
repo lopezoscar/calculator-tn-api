@@ -11,7 +11,7 @@ const TooManyRequestsError = require('../errors/TooManyRequestsError')
 const calculatorService = new CalculatorService()
 
 const schema = Joi.object({
-  operationType: Joi.string().valid('addition', 'subtraction', 'multiplication', 'division').required(),
+  operationType: Joi.string().valid('addition', 'subtraction', 'multiplication', 'division', 'square_root').required(),
   firstParam: Joi.number().required(),
   secondParam: Joi.number().required()
 })
