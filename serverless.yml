@@ -14,6 +14,7 @@ provider:
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     JWT_HS256_KEY: ${param:jwtKey}
+    RANDOM_ORG_API_KEY: ${param:randomOrgApiKey}
 
 functions:
   authorizeRequest:
@@ -35,6 +36,16 @@ functions:
     events:
       - http:
           path: /v1/calculate/basic
+          method: POST
+          authorizer:
+            name: authorizeRequest
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 3600
+  calculateRandom:
+    handler: app.calculateRandom
+    events:
+      - http:
+          path: /v1/calculate/random
           method: POST
           authorizer:
             name: authorizeRequest

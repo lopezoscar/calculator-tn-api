@@ -6,11 +6,14 @@ const UserModel = require('../models/user-model')
 const OperationModel = require('../models/operation-model')
 const TooManyRequestsError = require('../errors/TooManyRequestsError')
 
+const RandomLib = require('../lib/random-lib')
+
 class CalculatorService {
   constructor () {
     this.recordModel = new RecordModel()
     this.userModel = new UserModel()
     this.operationModel = new OperationModel()
+    this.randomLib = new RandomLib()
 
     this.basicOperations = {
       addition: (a, b) => a + b,
@@ -31,6 +34,7 @@ class CalculatorService {
     await this._checkUserBalance({ userId, cost: operation.cost })
 
     const operationResponse = this.basicOperations[operationType](firstParam, secondParam)
+
     const newRecord = {
       operation: operationType,
       operationResponse,
@@ -39,18 +43,47 @@ class CalculatorService {
       userId,
       date: new Date()
     }
-    try {
-      const { insertedId } = await this.recordModel.saveRecord(newRecord)
-      if (!insertedId) {
-        throw new Error('error storing record in DB')
-      }
 
+    try {
+      await this._storeRecord(newRecord)
       await this.userModel.decrementUserBalance({ userId, cost: operation.cost })
 
       return { operationResponse }
     } catch (error) {
       console.log(error)
       throw new InternalServerError('error calculating operation')
+    }
+  }
+
+  async calculateRandom ({ userId, length }) {
+    const operation = await this.operationModel.getOperationByType('random_string')
+
+    await this._checkUserBalance({ userId, cost: operation.cost })
+
+    const randomString = await this.randomLib.getRandom({ length })
+
+    const newRecord = {
+      operation: 'random_string',
+      userId,
+      operationResponse: randomString,
+      date: new Date()
+    }
+
+    try {
+      await this._storeRecord(newRecord)
+      await this.userModel.decrementUserBalance({ userId, cost: operation.cost })
+
+      return { operationResponse: randomString }
+    } catch (error) {
+      console.log(error)
+      throw new InternalServerError('error calculating operation')
+    }
+  }
+
+  async _storeRecord (newRecord) {
+    const { insertedId } = await this.recordModel.saveRecord(newRecord)
+    if (!insertedId) {
+      throw new Error('error storing record in DB')
     }
   }
 
