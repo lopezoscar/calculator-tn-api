@@ -15,6 +15,7 @@ exports.calculateBasic = createHandler(calculateBasic)
 function createHandler (handlerFn) {
   const handler = async (event, context) => {
     context.callbackWaitsForEmptyEventLoop = false
+    event.userId = event.requestContext?.authorizer?.claims?.userId
     await connectToDatabase()
     event.body = parseBody(event.body)
 

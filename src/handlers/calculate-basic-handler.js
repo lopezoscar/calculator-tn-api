@@ -22,9 +22,7 @@ function validate (data) {
   }
 }
 
-async function calculateBasic (event) {
-  const body = event.body
-  const userId = event.requestContext.authorizer.claims.userId
+async function calculateBasic ({ userId, body }) {
   try {
     const params = body
     validate(params)
