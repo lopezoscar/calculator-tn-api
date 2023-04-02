@@ -19,7 +19,12 @@ class CalculatorService {
       addition: (a, b) => a + b,
       subtraction: (a, b) => a - b,
       multiplication: (a, b) => a * b,
-      division: (a, b) => a / b,
+      division: (a, b) => {
+        if (b !== 0) {
+          return a / b
+        }
+        throw new ValidationError('division by zero is not allowed')
+      },
       square_root: (a) => Math.sqrt(a)
     }
   }
@@ -34,6 +39,7 @@ class CalculatorService {
     await this._checkUserBalance({ userId, cost: operation.cost })
 
     const operationResponse = this.basicOperations[operationType](firstParam, secondParam)
+    console.log('operationResponse', operationResponse)
 
     const newRecord = {
       operation: operationType,
