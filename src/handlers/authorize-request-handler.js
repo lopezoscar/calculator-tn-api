@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = (event, context, callback) => {
   const secret = Buffer.from(process.env.JWT_HS256_KEY, 'base64')
-  const authorization = event.headers.Authorization
+  const authorization = event.authorizationToken
   const methodArn = event.methodArn
 
   if (!authorization) {

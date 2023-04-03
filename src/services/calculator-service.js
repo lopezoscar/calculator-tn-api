@@ -107,6 +107,11 @@ class CalculatorService {
       console.log(error)
       throw new InternalServerError(`cannot get user by id ${userId}`)
     }
+
+    if (!user) {
+      throw new ValidationError(`user with id ${userId} not found`)
+    }
+
     if (user.balance < cost) {
       throw new TooManyRequestsError('not enough balance')
     }

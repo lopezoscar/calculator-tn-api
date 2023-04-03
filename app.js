@@ -21,7 +21,8 @@ exports.deleteRecord = createHandler(deleteRecord)
 function createHandler (handlerFn) {
   const handler = async (event, context) => {
     context.callbackWaitsForEmptyEventLoop = false
-    event.userId = event.requestContext?.authorizer?.claims?.userId
+    console.log('event', event)
+    event.userId = event.requestContext?.authorizer?.principalId
     await connectToDatabase()
     event.body = parseBody(event.body)
 

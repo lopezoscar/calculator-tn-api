@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
  - serverless-offline
+ - serverless-plugin-canary-deployments
 
 provider:
   name: aws
@@ -11,10 +12,22 @@ provider:
   timeout: 10
   tracing:
     lambda: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - codedeploy:*
+      Resource:
+        - "*"
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     JWT_HS256_KEY: ${param:jwtKey}
     RANDOM_ORG_API_KEY: ${param:randomOrgApiKey}
+    DB_CONN: ${param:dbConn}
+
+custom:
+  deploymentSettings:
+        type: AllAtOnce
+        alias: live
 
 functions:
   authorizeRequest:
