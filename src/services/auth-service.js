@@ -10,7 +10,7 @@ const USER_STATUS = {
   INACTIVE: 'INACTIVE'
 }
 
-const USER_INIT_BALANCE = 5
+const USER_INIT_BALANCE = 20
 
 class AuthService {
   constructor () {
