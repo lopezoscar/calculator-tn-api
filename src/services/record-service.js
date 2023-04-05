@@ -7,10 +7,12 @@ class RecordService {
     this.recordModel = new RecordsModel()
   }
 
-  listRecordsByUserId ({ userId, page, limit, sort }) {
+  async listRecordsByUserId ({ userId, page, limit, sort }) {
+    console.log('listRecordsByUserId', userId, page, limit, sort)
     page = Number(page)
     limit = Number(limit)
-    return this.recordModel.listRecordsByUserId({ userId, page, limit, sort })
+    const response = await this.recordModel.listRecordsByUserId({ userId, page, limit, sort })
+    return response
   }
 
   async deleteRecord ({ userId, recordId }) {

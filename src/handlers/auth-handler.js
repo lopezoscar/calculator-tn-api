@@ -22,6 +22,7 @@ function validate (data) {
 }
 
 async function auth ({ body }) {
+  console.log('auth', body)
   try {
     const params = body
     validate(params)

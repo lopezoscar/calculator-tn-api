@@ -33,6 +33,8 @@ class CalculatorService {
     if (!this.basicOperations[operationType]) {
       throw new ValidationError('invalid operation')
     }
+    firstParam = Number(firstParam)
+    secondParam = Number(secondParam)
 
     const operation = await this.operationModel.getOperationByType(operationType)
 

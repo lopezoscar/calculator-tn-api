@@ -25,7 +25,7 @@ class AuthService {
       }
       const validPassword = await comparePasswords({ plainPassword: password, passwordHashed: user.password })
       if (validPassword) {
-        return createToken({ payload: { userId: user._id } })
+        return createToken({ payload: { userId: user._id, username, sub: user._id } })
       }
 
       throw new Error('invalid password')

@@ -22,7 +22,7 @@
         "standard": "^17.0.0"
     },
     "scripts": {
-        "dev": "sls offline --noPrependStageInUrl --param='jwtKey=mV+VF4lH8/Z7eekRDFzYsxY4JYFZZZ7DEba2e2ZHLKg=' --param='randomOrgApiKey=35909380-94de-4853-a596-a4ec481e0b74'",
+        "dev": "sls offline --httpPort=4000 --noPrependStageInUrl --param='dbConn=mongodb://localhost:27017' --param='jwtKey=mV+VF4lH8/Z7eekRDFzYsxY4JYFZZZ7DEba2e2ZHLKg=' --param='randomOrgApiKey=35909380-94de-4853-a596-a4ec481e0b74'",
         "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
         "test:coverage": "jest --coverage --collectCoverageFrom=./src/**"
     },

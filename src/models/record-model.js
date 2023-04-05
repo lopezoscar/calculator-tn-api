@@ -30,6 +30,9 @@ class RecordModel {
   }
 
   _parseSort (sortAsString) {
+    if (sortAsString.length === 0) {
+      return {}
+    }
     const sortParams = sortAsString.split(',')
 
     const sort = sortParams.reduce((sort, param) => {
