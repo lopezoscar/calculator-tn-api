@@ -13,7 +13,8 @@ const recordService = new RecordService()
 const schema = Joi.object({
   page: Joi.number().min(1).max(100).required(),
   limit: Joi.number().min(1).max(100).required(),
-  sort: Joi.string().optional().allow(null).allow('')
+  sort: Joi.string().optional().allow(null).allow(''),
+  search: Joi.string().optional().allow(null).allow('')
 })
 
 function validate (data) {

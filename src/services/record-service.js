@@ -7,11 +7,11 @@ class RecordService {
     this.recordModel = new RecordsModel()
   }
 
-  async listRecordsByUserId ({ userId, page, limit, sort }) {
+  async listRecordsByUserId ({ userId, page, limit, sort, search }) {
     console.log('listRecordsByUserId', userId, page, limit, sort)
     page = Number(page)
     limit = Number(limit)
-    const response = await this.recordModel.listRecordsByUserId({ userId, page, limit, sort })
+    const response = await this.recordModel.listRecordsByUserId({ userId, page, limit, sort, search })
     return response
   }
 

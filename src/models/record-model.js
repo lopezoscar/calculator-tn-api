@@ -7,10 +7,15 @@ class RecordModel {
     return getDB().collection(RECORDS_COLLECTION).insertOne(record)
   }
 
-  listRecordsByUserId ({ userId, page, limit, sort = 'desc_date' }) {
+  listRecordsByUserId ({ userId, page, limit, sort = 'desc_date', search }) {
+    let query = { userId, active: true }
+    const searchParams = this._buildSearchQuery(search)
+    query = { ...query, ...searchParams }
+    console.log('listRecordsByUserId query', query)
+
     return getDB()
       .collection(RECORDS_COLLECTION)
-      .find({ userId, active: true })
+      .find(query)
       .skip((page - 1) * limit)
       .limit(limit)
       .sort(this._parseSort(sort))
@@ -44,6 +49,16 @@ class RecordModel {
 
     console.log('sort', sort)
     return sort
+  }
+
+  _buildSearchQuery (search) {
+    if (!search) {
+      return {}
+    }
+    const properties = ['operation', 'operationResponse', 'cost', 'userBalance']
+    return {
+      $or: properties.map(prop => ({ [prop]: new RegExp(search) }))
+    }
   }
 }
 
