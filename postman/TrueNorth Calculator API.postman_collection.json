@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "23d79d90-024f-4b2d-a5f8-5f5ca6268952",
+		"name": "TrueNorth Calculator API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3218810"
+	},
+	"item": [
+		{
+			"name": "POST /v1/auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"lopezoscar\",\n    \"password\": \"calculator1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v1/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /v1/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"lopezoscar\",\n    \"password\": \"calculator1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v1/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /v1/calculate/basic",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI5OTk3NDlmNTdlZTlhYTE1ZDZmZTkiLCJ1c2VybmFtZSI6ImxvcGV6b3NjYXIiLCJzdWIiOiI2NDI5OTk3NDlmNTdlZTlhYTE1ZDZmZTkiLCJpYXQiOjE2ODA3ODc3MTIsImV4cCI6MTY4MDc5MTMxMn0.YCPIMct4qwY8Q8BCI0B7l12D2drrmfR65NIps_8ZikQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"operationType\": \"addition\",\n    \"firstParam\": 15,\n    \"secondParam\": 12\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/v1/calculate/basic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"v1",
+						"calculate",
+						"basic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /v1/calculate/random",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDJiMmQ4NmNlNDIyOWRhMjQ2NGRhYmYiLCJpYXQiOjE2ODA1NTM0NDcsImV4cCI6MTY4MDU1NzA0N30.ej6PyITZM7n7eW9N1eWJoBzb6_NG2JZhLK9E-6cIZqI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"length\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://e76kvudl6b.execute-api.us-east-1.amazonaws.com/dev/v1/calculate/random",
+					"protocol": "https",
+					"host": [
+						"e76kvudl6b",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"v1",
+						"calculate",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST https://api.random.org/json-rpc/4/invoke",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"jsonrpc\": \"2.0\",\n      \"method\": \"generateStrings\",\n      \"params\": {\n        \"apiKey\": \"35909380-94de-4853-a596-a4ec481e0b74\",\n        \"n\": 1,\n        \"length\": 3,\n        \"characters\": \"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\",\n        \"replacement\": true\n      },\n      \"id\": 1222\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.random.org/json-rpc/4/invoke",
+					"protocol": "https",
+					"host": [
+						"api",
+						"random",
+						"org"
+					],
+					"path": [
+						"json-rpc",
+						"4",
+						"invoke"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /v1/records",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI5OTk3NDlmNTdlZTlhYTE1ZDZmZTkiLCJ1c2VybmFtZSI6ImxvcGV6b3NjYXIiLCJzdWIiOiI2NDI5OTk3NDlmNTdlZTlhYTE1ZDZmZTkiLCJpYXQiOjE2ODA3ODk2MTIsImV4cCI6MTY4MDc5MzIxMn0.gXYd266D29c7BpaZRWTu4ghj4X70k9L_0KJe1ym4Gdk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://e76kvudl6b.execute-api.us-east-1.amazonaws.com/dev/v1/records?page=1&limit=10&sort=desc_date",
+					"protocol": "https",
+					"host": [
+						"e76kvudl6b",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"v1",
+						"records"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "desc_date"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /v1/records",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDJiMmQ4NmNlNDIyOWRhMjQ2NGRhYmYiLCJpYXQiOjE2ODA1NTM5MzksImV4cCI6MTY4MDU1NzUzOX0.Fm1AuJSpuIcnE9vUYfUoZBQTgrtppwNuRRz6cckmRR8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"recordId\": \"642b35b6ee23fd0c9e144671\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://e76kvudl6b.execute-api.us-east-1.amazonaws.com/dev/v1/records",
+					"protocol": "https",
+					"host": [
+						"e76kvudl6b",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"v1",
+						"records"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
