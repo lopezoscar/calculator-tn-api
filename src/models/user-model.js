@@ -24,7 +24,7 @@ class UserModel {
         balance: -cost
       }
     }
-    return getDB().collection(USERS_COLLECTION).findOneAndUpdate(query, update, { returnNewDocument: true })
+    return getDB().collection(USERS_COLLECTION).findOneAndUpdate(query, update, { returnDocument: 'after' })
   }
 }
 
