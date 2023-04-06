@@ -25,7 +25,13 @@ function createHandler (handlerFn) {
     await connectToDatabase()
     event.body = parseBody(event.body)
 
-    return handlerFn(event)
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': process.env.CORS_WEB_ORIGIN || '*',
+      'Access-Control-Allow-Credentials': true
+    }
+    const response = await handlerFn(event)
+    response.headers = { ...response.headers, ...corsHeaders }
+    return response
   }
   return handler
 }

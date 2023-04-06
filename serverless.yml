@@ -10,6 +10,8 @@ provider:
   runtime: nodejs18.x
   memorySize: 128
   timeout: 10
+  logs:
+    restApi: true
   tracing:
     lambda: true
   iamRoleStatements:
@@ -23,11 +25,24 @@ provider:
     JWT_HS256_KEY: ${param:jwtKey}
     RANDOM_ORG_API_KEY: ${param:randomOrgApiKey}
     DB_CONN: ${param:dbConn}
+    CORS_WEB_ORIGIN: ${param:corsWebOrigin}
 
 custom:
   deploymentSettings:
         type: AllAtOnce
         alias: live
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'https://calculator-tn-webapp.vercel.app'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
 
 functions:
   authorizeRequest:
@@ -38,18 +53,21 @@ functions:
       - http:
           path: /v1/auth
           method: POST
+          cors: true
   register:
     handler: app.register
     events:
       - http:
           path: /v1/register
           method: POST
+          cors: true
   calculateBasic:
     handler: app.calculateBasic
     events:
       - http:
           path: /v1/calculate/basic
           method: POST
+          cors: true
           authorizer:
             name: authorizeRequest
             identitySource: method.request.header.Authorization
@@ -60,6 +78,7 @@ functions:
       - http:
           path: /v1/calculate/random
           method: POST
+          cors: true
           authorizer:
             name: authorizeRequest
             identitySource: method.request.header.Authorization
@@ -70,6 +89,7 @@ functions:
       - http:
           path: /v1/records
           method: GET
+          cors: true
           authorizer:
             name: authorizeRequest
             identitySource: method.request.header.Authorization
@@ -80,6 +100,7 @@ functions:
       - http:
           path: /v1/records
           method: DELETE
+          cors: true
           authorizer:
             name: authorizeRequest
             identitySource: method.request.header.Authorization
