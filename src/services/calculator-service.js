@@ -48,13 +48,16 @@ class CalculatorService {
       firstParam,
       secondParam,
       userId,
+      cost: operation.cost,
       active: true,
       date: new Date()
     }
 
     try {
+      const userUpdated = await this.userModel.decrementUserBalance({ userId, cost: operation.cost })
+      newRecord.userBalance = userUpdated?.value?.balance
+
       await this._storeRecord(newRecord)
-      await this.userModel.decrementUserBalance({ userId, cost: operation.cost })
 
       return { operationResponse }
     } catch (error) {
@@ -77,14 +80,18 @@ class CalculatorService {
     const newRecord = {
       operation: 'random_string',
       userId,
+      length,
       operationResponse: randomString,
       active: true,
+      cost: operation.cost,
       date: new Date()
     }
 
     try {
+      const userUpdated = await this.userModel.decrementUserBalance({ userId, cost: operation.cost })
+      newRecord.userBalance = userUpdated?.value?.balance
+
       await this._storeRecord(newRecord)
-      await this.userModel.decrementUserBalance({ userId, cost: operation.cost })
 
       return { operationResponse: randomString }
     } catch (error) {
