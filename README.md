@@ -65,7 +65,9 @@ This project is running on AWS and uses the following technologies:
 
 > To deploy the code you can check the deploy.sh file. I committed because this is a test but it should be change to run it in production and ideally create a CI/CD pipeline that run this command.
 
-Please click here to see the webpage: [Calculator](https://calculator-tn-webapp.vercel.app)
+API DOMAIN [https://i7q8kvf148.execute-api.us-east-1.amazonaws.com/production/](https://i7q8kvf148.execute-api.us-east-1.amazonaws.com/production/)
+
+WEBPAGE: [https://calculator-tn-webapp.vercel.app](https://calculator-tn-webapp.vercel.app)
 
 ## Endpoints
 
